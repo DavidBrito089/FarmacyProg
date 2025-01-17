@@ -37,7 +37,7 @@
 
         // Cargar usuarios
         async function loadUsers() {
-            const response = await fetch('https://<RENDER-URL>/users');
+            const response = await fetch('https://farmacyprog.onrender.com/users');
             const users = await response.json();
             userList.innerHTML = users.map(user => `<li>${user.name} - ${user.email}</li>`).join('');
         }
