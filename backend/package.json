@@ -6,8 +6,11 @@
         "start": "node server.js"
     },
     "dependencies": {
+        "bcryptjs": "^2.4.3",
         "cors": "^2.8.5",
-        "express": "^4.18.2",
+        "express": "^4.21.2",
+        "jsonwebtoken": "^9.0.2",
+        "moment-timezone": "^0.5.46",
         "pg": "^8.13.1"
     }
 }
