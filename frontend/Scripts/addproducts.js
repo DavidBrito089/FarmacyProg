@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         productsSection.classList.remove('hidden');
         offersSection.classList.add('hidden');
 
-        const response = await fetch(`http://localhost:3000/products`);
+        const response = await fetch(`https://farmacyprog.onrender.com/products`);
         const products = await response.json();
 
         productList.innerHTML = products.map(product => `
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         productsSection.classList.add('hidden');
 
         // Obtener ofertas del día desde el backend
-        const response = await fetch(`http://localhost:3000/offers`);
+        const response = await fetch(`https://farmacyprog.onrender.com/offers`);
         const offers = await response.json();
         // Renderizar ofertas
         offersList.innerHTML = offers.map(offer => `
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-fetch('http://localhost:3000/products')
+fetch('https://farmacyprog.onrender.com/products')
     .then(response => response.json())
     .then(products => {
         const productList = document.getElementById('product-list');
@@ -151,7 +151,7 @@ fetch('http://localhost:3000/products')
 async function addToCart(productId) {
     
     const token = localStorage.getItem('token');
-    const response1 = await fetch('http://localhost:3000/profile', {
+    const response1 = await fetch('https://farmacyprog.onrender.com/profile', {
         headers: { Authorization: `Bearer ${token}` }
     });    
     
@@ -165,7 +165,7 @@ async function addToCart(productId) {
         return;
     }
 
-    const response = await fetch('http://localhost:3000/cart/add', {
+    const response = await fetch('https://farmacyprog.onrender.com/cart/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userId, product_id: productId, quantity: 1 })

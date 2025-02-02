@@ -2,7 +2,7 @@ async function loadCartItems() {
     // Supongamos que el ID del usuario se guarda en localStorage
 
     const token = localStorage.getItem('token');
-    const response1 = await fetch('http://localhost:3000/profile', {
+    const response1 = await fetch('https://farmacyprog.onrender.com/profile', {
         headers: { Authorization: `Bearer ${token}` }
     });    
     
@@ -15,7 +15,7 @@ async function loadCartItems() {
     }
   
     try {
-      const response = await fetch(`http://localhost:3000/cart-items/${userId}`);
+      const response = await fetch(`https://farmacyprog.onrender.com/cart-items/${userId}`);
       if (!response.ok) {
         throw new Error('Error al obtener los productos del carrito');
       }
@@ -65,7 +65,7 @@ async function loadCartItems() {
 
   async function updateQuantity(cartItemId, change) {
     try {
-      await fetch(`http://localhost:3000/cart/update/${cartItemId}`, {
+      await fetch(`https://farmacyprog.onrender.com/cart/update/${cartItemId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ change })
@@ -78,7 +78,7 @@ async function loadCartItems() {
 
   async function removeFromCart(cartItemId) {
     try {
-      await fetch(`http://localhost:3000/cart/remove/${cartItemId}`, {
+      await fetch(`https://farmacyprog.onrender.com/cart/remove/${cartItemId}`, {
         method: 'DELETE'
       });
       loadCartItems(); // Recarga el carrito tras eliminar

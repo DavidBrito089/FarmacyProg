@@ -22,7 +22,7 @@ registerForm.addEventListener('submit', async (event) => {
 
     try {
         // Envía los datos al backend
-        const response = await fetch('http://localhost:3000/register', {
+        const response = await fetch('https://farmacyprog.onrender.com/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

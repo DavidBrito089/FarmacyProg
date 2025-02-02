@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded',() =>{
         const email = document.getElementById("loginl").value;
         const password = document.getElementById("passwordl").value;
         try{
-            const res = await fetch("http://localhost:3000/login", {
+            const res = await fetch("https://farmacyprog.onrender.com/login", {
                 method:"POST",
                 headers: {"Content-Type":"application/json"},
                 body: JSON.stringify({email, password})
