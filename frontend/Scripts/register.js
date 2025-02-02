@@ -1,30 +1,44 @@
-document.getElementById('registerForm').addEventListener('submit', async (e) => {
-    e.preventDefault(); // Prevenir recarga de la página
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const toRegister = document.getElementById('toRegister');
+const toLogin = document.getElementById('toLogin');
 
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+toRegister.addEventListener('click', () => {
+    loginForm.style.display = 'none';
+    registerForm.style.display = 'block';
+});
+
+toLogin.addEventListener('click', () => {
+    registerForm.style.display = 'none';
+    loginForm.style.display = 'block';
+});
+
+registerForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const username = document.getElementById('rUser').value;
+    const email = document.getElementById('rEmail').value;
+    const password = document.getElementById('rPassword').value;
 
     try {
-        const response = await fetch('https://farmacyprog.onrender.com/register', {
+        // Envía los datos al backend
+        const response = await fetch('http://localhost:3000/register', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username, email, password }),
+            body: JSON.stringify({ username, email, password })
         });
 
+        const data = await response.json();
+
         if (response.ok) {
-            document.getElementById('registerSuccess').style.display = 'block';
-            document.getElementById('registerError').style.display = 'none';
+            alert(data.message);
         } else {
-            const data = await response.json();
-            document.getElementById('registerError').textContent = data.message;
-            document.getElementById('registerError').style.display = 'block';
+            alert(data.message);
         }
     } catch (error) {
-        console.error('Error al enviar la solicitud:', error);
-        document.getElementById('registerError').textContent = 'Hubo un error. Inténtalo de nuevo.';
-        document.getElementById('registerError').style.display = 'block';
+        console.error('Error al registrar el usuario:', error);
+        alert('Error del servidor. Inténtalo más tarde.');
     }
 });

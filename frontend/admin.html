@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Descuentos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+        .btn-save {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-save:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="text-center">Administración de Descuentos</h2>
+    <table class="table table-bordered table-hover mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Día de la Semana</th>
+                <th>Categoría</th>
+                <th>Descuento (%)</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody id="discounts-table">
+            <!-- Aquí se insertarán los datos dinámicamente -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    async function fetchDiscounts() {
+        try {
+            const response = await fetch('http://localhost:3000/discounts');
+            const discounts = await response.json();
+            const tableBody = document.getElementById('discounts-table');
+            tableBody.innerHTML = ''; // Limpiar contenido previo
+
+            discounts.forEach(discount => {
+                const row = `
+                    <tr>
+                        <td>${discount.day_of_week}</td>
+                        <td>${discount.category_name}</td>
+                        <td>
+                            <input type="number" class="form-control text-center" value="${discount.discount_percentage}" min="0" max="100" id="discount-${discount.id}">
+                        </td>
+                        <td>
+                            <button class="btn btn-save" onclick="updateDiscount(${discount.id})">Guardar</button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        } catch (error) {
+            console.error('Error obteniendo descuentos:', error);
+        }
+    }
+
+    async function updateDiscount(id) {
+        const newDiscount = document.getElementById(`discount-${id}`).value;
+
+        const response = await fetch(`http://localhost:3000/discounts/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ discount_percentage: newDiscount })
+        });
+
+        if (response.ok) {
+            alert('Descuento actualizado correctamente');
+            fetchDiscounts();
+        } else {
+            alert('Error actualizando descuento');
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", fetchDiscounts);
+</script>
+
+</body>
+</html>
