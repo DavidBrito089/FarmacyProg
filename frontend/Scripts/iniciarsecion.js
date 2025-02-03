@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded',() =>{
+    event.preventDefault();
     checkUserStatus();
     document.getElementById("log").addEventListener("click", async()=>{
         const email = document.getElementById("loginl").value;
@@ -48,9 +49,10 @@ async function checkUserStatus() {
         });    
         
         const data = await response.json();
+
+
+
         if (response.ok) {
-
-
             const rol = data.decoded.role;
             
             if (rol === "admin") {
