@@ -389,6 +389,34 @@ p.image_url, categories.name AS category_name
     }
 });
 
+
+const isAdmin = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Acceso no autorizado' });
+  }
+  next();
+};
+
+app.post('/products', authenticateToken, isAdmin, async (req, res) => {
+  const { name, description, price, image_url, category_id } = req.body;
+  
+  // Validar campos requeridos
+  if (!name || !price || !category_id) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios' });
+  }
+
+  try {
+      const result = await pool.query(
+          'INSERT INTO products (name, description, price, image_url, category_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+          [name, description, price, image_url, category_id]
+      );
+      res.status(201).json(result.rows[0]);
+  } catch (err) {
+      console.error('Error al insertar producto:', err);
+      res.status(500).json({ error: 'Error al insertar producto' });
+  }
+});
+
 // Puerto para correr la aplicación
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));

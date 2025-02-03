@@ -3,94 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrar Descuentos</title>
+    <title>Agregar Producto - Farmacia</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .container {
-            margin-top: 30px;
-        }
-        .table th, .table td {
-            vertical-align: middle;
-            text-align: center;
-        }
-        .btn-save {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-save:hover {
-            background-color: #218838;
-        }
-    </style>
+    <!-- Estilos personalizados -->
+    <link href="styles/admin.css" rel="stylesheet">
 </head>
 <body>
+    <div class="container mt-5">
+        <div class="card shadow">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">Farmacia Admin</a>
+                    <div class="d-flex">
+                        <a id="logout" class="btn btn-danger">Cerrar sesión</a>
+                    </div>
+                </div>
+            </nav>
+            <div class="card-header bg-primary text-white">
+                <h1 class="card-title text-center">Agregar Nuevo Producto</h1>
+            </div>
 
-<div class="container">
-    <h2 class="text-center">Administración de Descuentos</h2>
-    <table class="table table-bordered table-hover mt-4">
-        <thead class="table-dark">
-            <tr>
-                <th>Día de la Semana</th>
-                <th>Categoría</th>
-                <th>Descuento (%)</th>
-                <th>Acción</th>
-            </tr>
-        </thead>
-        <tbody id="discounts-table">
-            <!-- Aquí se insertarán los datos dinámicamente -->
-        </tbody>
-    </table>
-</div>
+            <div class="card-body">
+                <!-- Formulario modificado -->
+                <form id="productForm">
+                    <!-- Campo para el nombre del producto -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nombre del Producto:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
 
-<script>
-    async function fetchDiscounts() {
-        try {
-            const response = await fetch('http://localhost:3000/discounts');
-            const discounts = await response.json();
-            const tableBody = document.getElementById('discounts-table');
-            tableBody.innerHTML = ''; // Limpiar contenido previo
+                    <!-- Campo para la descripción del producto -->
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descripción:</label>
+                        <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                    </div>
 
-            discounts.forEach(discount => {
-                const row = `
-                    <tr>
-                        <td>${discount.day_of_week}</td>
-                        <td>${discount.category_name}</td>
-                        <td>
-                            <input type="number" class="form-control text-center" value="${discount.discount_percentage}" min="0" max="100" id="discount-${discount.id}">
-                        </td>
-                        <td>
-                            <button class="btn btn-save" onclick="updateDiscount(${discount.id})">Guardar</button>
-                        </td>
-                    </tr>
-                `;
-                tableBody.innerHTML += row;
-            });
-        } catch (error) {
-            console.error('Error obteniendo descuentos:', error);
-        }
-    }
+                    <!-- Campo para el precio del producto -->
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Precio:</label>
+                        <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                    </div>
 
-    async function updateDiscount(id) {
-        const newDiscount = document.getElementById(`discount-${id}`).value;
+                    <!-- Campo para la URL de la imagen del producto -->
+                    <div class="mb-3">
+                        <label for="image_url" class="form-label">URL de la Imagen:</label>
+                        <input type="url" class="form-control" id="image_url" name="image_url">
+                    </div>
 
-        const response = await fetch(`http://localhost:3000/discounts/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ discount_percentage: newDiscount })
-        });
+                    <!-- Campo para la categoría del producto -->
+                    <div class="mb-3">
+                        <label for="category_id" class="form-label">Categoría:</label>
+                        <select class="form-select" id="category_id" name="category_id" required>
+                            <option value="1">Vitaminas</option>
+                            <option value="2">Aseo Personal</option>
+                            <option value="3">Medicamentos</option>
+                            <option value="4">Suplementos</option>
+                        </select>
+                    </div>
 
-        if (response.ok) {
-            alert('Descuento actualizado correctamente');
-            fetchDiscounts();
-        } else {
-            alert('Error actualizando descuento');
-        }
-    }
+                    <!-- Contenedor de mensajes -->
+                    <div id="message" class="mt-3"></div>
 
-    document.addEventListener("DOMContentLoaded", fetchDiscounts);
-</script>
+                    <!-- Botón para enviar el formulario -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">Agregar Producto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    <!-- Bootstrap JS (opcional, solo si necesitas funcionalidades JS de Bootstrap) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="adminScripts/addProducts.js"></script>
 </body>
 </html>

@@ -48,7 +48,15 @@ async function checkUserStatus() {
         });    
         
         const data = await response.json();
-        if (response.ok) {      
+        if (response.ok) {
+
+
+            const rol = data.decoded.role;
+            
+            if (rol === "admin") {
+                window.location.href = "admin.html";
+              }
+
             carrito.classList.remove("open-modal-btn");
             carrito.setAttribute("href","carrito.html");
             modal.classList.remove('show');
